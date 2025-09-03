@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Product Detail Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #f9f9f9;
+    }
+    .product-box {
+      background-color: #fff;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 30px;
+      max-width: 900px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .container {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .image-section {
+      flex: 1;
+    }
+    .main-image {
+      width: 100%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+    }
+    .thumbnails {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+    }
+    .thumbnails img {
+      width: 80px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+    }
+    .details {
+      flex: 1;
+    }
+    .product-name {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .price {
+      font-size: 22px;
+      color: green;
+      margin-bottom: 10px;
+    }
+    .description {
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 16px;
+      color: #333;
+    }
+    .colors {
+      margin-bottom: 20px;
+    }
+    .color-option {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 10px;
+      cursor: pointer;
+      border: 2px solid #ccc;
+    }
+    .color-option:hover {
+      border-color: black;
+    }
+    .color-option.selected {
+      box-shadow: 0 0 0 3px #fff, 0 0 0 5px #000;
+    }
+    .size-option {
+      display: inline-block;
+      padding: 8px 14px;
+      margin-right: 10px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .size-option:hover {
+      background-color: #eee;
+      border-color: black;
+    }
+    .size-option.selected {
+      background-color: #000;
+      color: #fff;
+      border-color: #000;
+    }
+    .cart {
+      margin-top: 40px;
+      border-top: 2px solid #ccc;
+      padding-top: 20px;
+    }
+    .related-products {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .related-products h3 {
+      margin-bottom: 16px;
+    }
+    .product-card {
+      display: inline-block;
+      width: 200px;
+      margin: 10px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+      background-color: #fff;
+      border-radius: 8px;
+    }
+    .product-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+    .back-button {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .back-button button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="product-box">
+    <div class="container">
+      <div class="image-section">
+        <img id="mainImage" src="jacket 4.jpg" class="main-image" />
+        <div class="thumbnails">
+          <img src="jacket 5.jpg" onclick="swapImage(this)" />
+          <img src="jacket 6.jpg" onclick="swapImage(this)" />
+          <img src="jacket 7.jpg" onclick="swapImage(this)" />
+        </div>
+      </div>
+
+      <div class="details">
+        <div class="product-name" id="productName">Stay Warm, Look Sharp</div>
+        <div class="price" id="productPrice">₹300</div>
+        <div class="description">Perfect Choice Of Boys.</div>
+        <p>" Embrace effortless style and comfort with our sleek, zip‑up jacket—crafted from lightweight nylon with a tailored, regular fit, full sleeves, and a hooded design that’s perfect for both daily wear and those breezy evenings."</p>
+
+        <div class="colors">
+          <strong>Choose Color:</strong><br>
+          <div class="color-option" style="background-color: red;" onclick="selectColor(this)"></div>
+          <div class="color-option" style="background-color: blue;" onclick="selectColor(this)"></div>
+          <div class="color-option" style="background-color: green;" onclick="selectColor(this)"></div>
+          <div class="color-option" style="background-color: black;" onclick="selectColor(this)"></div>
+        </div>
+
+        <div>
+          <strong>Choose Size:</strong><br>
+          <div class="size-option" onclick="selectSize(this)">S</div>
+          <div class="size-option" onclick="selectSize(this)">M</div>
+          <div class="size-option" onclick="selectSize(this)">L</div>
+          <div class="size-option" onclick="selectSize(this)">XL</div>
+        </div>
+
+        <br>
+        <button onclick="addToCart()">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="cart">
+      <h2>🛒 Cart</h2>
+      <ul id="cartItems"></ul>
+      <p><strong>Total: ₹<span id="cartTotal">0</span></strong></p>
+    </div>
+  </div>
+
+  <div class="back-button">
+    <a href="shop.html">
+      <button>🔙 Back to Shop</button>
+    </a>
+  </div>
+
+  <script>
+    let cart = [];
+    let total = 0;
+
+    function swapImage(thumbnail) {
+      document.getElementById('mainImage').src = thumbnail.src;
+    }
+
+    function selectSize(element) {
+      document.querySelectorAll('.size-option').forEach(btn => btn.classList.remove('selected'));
+      element.classList.add('selected');
+    }
+
+    function selectColor(element) {
+      document.querySelectorAll('.color-option').forEach(btn => btn.classList.remove('selected'));
+      element.classList.add('selected');
+    }
+
+    function addToCart() {
+      const name = document.getElementById('productName').textContent;
+      const priceText = document.getElementById('productPrice').textContent;
+      const price = parseInt(priceText.replace('₹', ''));
+
+      const selectedSize = document.querySelector('.size-option.selected');
+      const selectedColor = document.querySelector('.color-option.selected');
+
+      const size = selectedSize ? selectedSize.textContent : 'Not selected';
+      const color = selectedColor ? selectedColor.style.backgroundColor : 'Not selected';
+
+      cart.push({ name, price, size, color });
+      total += price;
+
+      const cartItems = document.getElementById('cartItems');
+      const newItem = document.createElement('li');
+      newItem.textContent = `${name} - ₹${price} | Size: ${size} | Color: ${color}`;
+      cartItems.appendChild(newItem);
+
+      document.getElementById('cartTotal').textContent = total;
+    }
+  </script>
+
+</body>
+</html>
